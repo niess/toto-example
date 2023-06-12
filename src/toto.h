@@ -9,8 +9,8 @@ extern "C" {
 
 
 enum toto_return {
-    LIB_SUCCESS = 0,
-    LIB_FAILURE
+    TOTO_SUCCESS = 0,
+    TOTO_FAILURE
 };
 
 struct toto_img;
@@ -68,6 +68,11 @@ enum toto_return toto_img_iadd(
     const struct toto_img * other
 );
 
+enum toto_return toto_img_iadd_v(
+    struct toto_img * self,
+    size_t size,
+    const struct toto_img * others[]
+);
 
 #ifdef __cplusplus
 }

@@ -102,14 +102,14 @@ struct toto_img * toto_img_zeros(
 }
 
 
-/* Inplace addition. */
+/* Inplace addition(s). */
 enum toto_return toto_img_iadd(
     struct toto_img * self,
     const struct toto_img * other)
 {
         if ((self->height != other->height) ||
             (self->width != other->width)) {
-                return LIB_FAILURE;
+                return TOTO_FAILURE;
         }
 
         toto_img_ref_t * ref = self->ref;
@@ -120,5 +120,20 @@ enum toto_return toto_img_iadd(
                 }
         }
 
-        return LIB_SUCCESS;
+        return TOTO_SUCCESS;
+}
+
+enum toto_return toto_img_iadd_v(
+    struct toto_img * self,
+    size_t size,
+    const struct toto_img * others[])
+{
+        size_t i;
+        for (i = 0; i < size; i++) {
+                enum toto_return r = toto_img_iadd(self, others[i]);
+                if (r != TOTO_SUCCESS) {
+                        return r;
+                }
+        }
+        return TOTO_SUCCESS;
 }
