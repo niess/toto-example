@@ -3,7 +3,7 @@
 import numpy
 import toto
 
-shape = (3, 2)
+shape = (201, 201)
 a = numpy.ones(shape)
 b = numpy.full(shape, 2.0)
 toto.iadd(a, b)

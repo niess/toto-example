@@ -22,7 +22,7 @@ def wrap2(a):
         a.shape[1],
         a.strides[0],
         a.strides[1],
-        a.ctypes.data
+        a.ctypes.data_as(ctypes.c_void_p)
     )
 
     return wrapper
