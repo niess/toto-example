@@ -1,4 +1,5 @@
 #include "toto.h"
+#include "wrapper.h"
 
 
 /* Wrapper for numpy arrays. */
@@ -8,13 +9,6 @@ struct wrapper {
         size_t stride_w;
         double * data;
 };
-
-
-/* Get size of wrapper object. */
-size_t toto_wrapper_size(void)
-{
-        return sizeof (struct wrapper);
-}
 
 
 static double wrapper_get(

@@ -8,6 +8,12 @@ extern "C" {
 #include <stddef.h>
 
 
+/* Version macros */
+#define TOTO_VERSION_MAJOR 0
+#define TOTO_VERSION_MINOR 1
+#define TOTO_VERSION_PATCH 0
+
+
 enum toto_return {
     TOTO_SUCCESS = 0,
     TOTO_FAILURE
