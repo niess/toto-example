@@ -5,6 +5,33 @@ import weakref
 # Load the C library.
 lib = ctypes.CDLL("lib/libtoto.so")
 
+# Prototype C library functions.
+lib.toto_wrapper_size.argstypes = None
+lib.toto_wrapper_size.restype = ctypes.c_size_t
+
+lib.toto_wrapper_img.argstypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_size_t,
+    ctypes.c_void_p
+]
+lib.toto_wrapper_img.restype = ctypes.c_void_p
+
+lib.toto_img_iadd.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_void_p,
+]
+lib.toto_img_iadd.restype = None
+
+lib.toto_img_iadd_v.argtypes = [
+    ctypes.c_void_p,
+    ctypes.c_size_t,
+    ctypes.c_void_p,
+]
+lib.toto_img_iadd_v.restype = None
+
 
 # Bytes container for C wrapper object.
 WRAPPER = lib.toto_wrapper_size() * ctypes.c_byte
