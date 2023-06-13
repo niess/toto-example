@@ -10,6 +10,10 @@ toto.iadd(a, b)
 print(a)
 
 a = numpy.zeros(shape)
-b = numpy.full([4, *shape], 2.0)
+b = numpy.stack((
+    numpy.full(shape, 1.0),
+    numpy.full(shape, 2.0),
+    numpy.full(shape, 3.0)
+))
 toto.iadd(a, b)
 print(a)

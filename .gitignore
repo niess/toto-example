@@ -1,6 +1,9 @@
 bin/
 lib/
+*.o
 *.pyc
 *.pyo
+*.so
 toto/include/
 toto/lib/
+toto/version.py
