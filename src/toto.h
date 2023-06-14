@@ -19,6 +19,11 @@ enum toto_return {
     TOTO_FAILURE
 };
 
+
+/* ============================================================================
+ * Image interface
+ * ============================================================================
+ */
 struct toto_img;
 
 typedef double (toto_img_get_t) (
@@ -43,7 +48,7 @@ typedef void toto_img_set_t (
 typedef void toto_img_destroy_t (struct toto_img ** self_ptr);
 
 struct toto_img {
-    /* Meta data. */
+    /* Metadata. */
     const size_t height;
     const size_t width;
 
@@ -78,6 +83,50 @@ enum toto_return toto_img_iadd_v(
     struct toto_img * self,
     size_t size,
     const struct toto_img * others[]
+);
+
+
+/* ============================================================================
+ * Model interface
+ * ============================================================================
+ */
+struct toto_model;
+
+typedef void toto_model_destroy_t (struct toto_model ** self_ptr);
+
+struct toto_model {
+    /* Metadata. */
+    const size_t height;
+    const size_t width;
+    const double pmin;
+    const double pmax;
+
+    /* Destructor. */
+    toto_model_destroy_t * destroy;
+};
+
+/* Create a model object from a parametric collection of images. */
+struct toto_model * toto_model_create(
+    size_t size,
+    const double parameter[],
+    const struct toto_img * images[]
+);
+
+/* Get a snapshot of the model for a given parameter value (by interpolation).
+ */
+enum toto_return toto_model_get(
+    const struct toto_model * model,
+    double parameter,
+    struct toto_img * image
+);
+
+/* Get parameter values for a given model and observation (i.e. invert the
+ * observation for the model).
+ */
+enum toto_return toto_model_invert(
+    const struct toto_model * model,
+    const struct toto_img * observation,
+    struct toto_img * parameter
 );
 
 #ifdef __cplusplus

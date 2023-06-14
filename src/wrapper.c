@@ -91,6 +91,7 @@ enum toto_return toto_img_iadd_w(
         return toto_img_iadd(self, other);
 }
 
+
 enum toto_return toto_img_iadd_v_w(
     size_t self_properties[4],
     void * self_data,
@@ -126,4 +127,99 @@ enum toto_return toto_img_iadd_v_w(
 
         /* Call the library function. */
         return toto_img_iadd_v(self, size, others);
+}
+
+
+/* Wrapping parametric model constructor. */
+struct toto_model * toto_model_create_w(
+    size_t parameter_stride,
+    const void * parameter_data,
+    const size_t images_properties[6],
+    void * images_data)
+{
+        /* Wrap parameter vector. */
+        size_t depth = images_properties[0];
+        double parameter[depth];
+        size_t i;
+        for (i = 0; i < depth; i++) {
+                parameter[i] =
+                    *(double *)(parameter_data + i * parameter_stride);
+        }
+
+        /* Wrap images collection. */
+        struct wrapper collection_wrapper[depth];
+        const struct toto_img * collection[depth];
+        size_t collection_properties[4] = {
+            images_properties[1],
+            images_properties[2],
+            images_properties[4],
+            images_properties[5]
+        };
+        for (i = 0; i < depth; i++) {
+                collection[i] = wrapper_img(
+                    collection_wrapper + i,
+                    collection_properties,
+                    images_data + i * images_properties[3]
+                );
+        }
+
+        /* Call the library function. */
+        return toto_model_create(
+            depth,
+            parameter,
+            collection
+        );
+}
+
+
+enum toto_return toto_model_get_w(
+    const struct toto_model * model,
+    double parameter,
+    const size_t image_properties[4],
+    void * image_data)
+{
+        /* Wrap output image. */
+        struct wrapper image_wrapper;
+        struct toto_img * image = wrapper_img(
+            &image_wrapper,
+            image_properties,
+            image_data
+        );
+
+        return toto_model_get(
+            model,
+            parameter,
+            image
+        );
+}
+
+
+enum toto_return toto_model_invert_w(
+    const struct toto_model * model,
+    const size_t observation_properties[4],
+    void * observation_data,
+    const size_t parameter_properties[4],
+    void * parameter_data)
+{
+        /* Wrap input observation. */
+        struct wrapper observation_wrapper;
+        struct toto_img * observation = wrapper_img(
+            &observation_wrapper,
+            observation_properties,
+            observation_data
+        );
+
+        /* Wrap output parameter values. */
+        struct wrapper parameter_wrapper;
+        struct toto_img * parameter = wrapper_img(
+            &parameter_wrapper,
+            parameter_properties,
+            parameter_data
+        );
+
+        return toto_model_invert(
+            model,
+            observation,
+            parameter
+        );
 }
